@@ -29,7 +29,7 @@ const getHolidays = async (req: Request, res: Response) => {
   }
 };
 
-const getCountries = async (_, res: Response) => {
+const getCountries = async (req: Request, res: Response) => {
   const cachedData = cache.get('countries');
   if (cachedData) {
     return res.status(200).json({ message: 'Cached Data Successfull', countries: cachedData });
