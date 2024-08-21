@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { fetchHolidays } from '../utils';
+import { fetchHolidays, fetchCountries } from '../utils';
 import { cache } from '..';
 
 const getHolidays = async (req: Request, res: Response) => {
@@ -18,7 +18,7 @@ const getHolidays = async (req: Request, res: Response) => {
 
   // if cached data is available, return it
   if (cachedData) {
-    return res.status(200).json({ message: 'Successfull', holidays: cachedData });
+    return res.status(200).json({ message: 'Cached Data Successfull', holidays: cachedData });
   }
 
   try {
@@ -29,7 +29,19 @@ const getHolidays = async (req: Request, res: Response) => {
   }
 };
 
-const getCountries = () => {};
+const getCountries = async (_, res: Response) => {
+  const cachedData = cache.get('countries');
+  if (cachedData) {
+    return res.status(200).json({ message: 'Cached Data Successfull', countries: cachedData });
+  }
+
+  try {
+    const countries = await fetchCountries();
+    res.status(200).json({ message: 'Successfull', countries });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
 
 const CalendarificController = {
   getHolidays,

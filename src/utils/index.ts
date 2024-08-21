@@ -22,3 +22,22 @@ export const fetchHolidays = async (country: string, year: string) => {
     throw new Error('Error fetching holidays');
   }
 };
+
+export const fetchCountries = async () => {
+  try {
+    const response = await axios.get('https://calendarific.com/api/v2/countries', {
+      params: {
+        api_key: process.env.CALENDARIFIC_API_KEY,
+      },
+    });
+
+    const countries = response.data.response.countries;
+
+    // Cache the data
+    cache.set('countries', countries);
+
+    return countries;
+  } catch (error) {
+    throw new Error('Error fetching countries');
+  }
+};

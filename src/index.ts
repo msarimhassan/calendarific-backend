@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-export const cache = new NodeCache({ stdTTL: 3600 });
+export const cache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
 
 app.get('/', (_, res: Response) => {
   res.send('Hello World');
